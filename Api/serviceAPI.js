@@ -1,3 +1,4 @@
+const { request, response } = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -19,6 +20,24 @@ router.get("/myPage", (request,response)=>{
         method:request.method,
         data:services,
     })
+});
+
+router.post("/myPage",(request, response)=>{
+    const service = {
+        id: request.body.id,
+        heading: request.body.heading,
+        description: request.body.description,
+        img:request.body.img,
+        email:request.body.email
+    }
+
+    services.push(service);
+
+    response.json({
+        status:"success",
+        method:request.method,
+        data:services,
+    });
 })
 
 module.exports = router;
