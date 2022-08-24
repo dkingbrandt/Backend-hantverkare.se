@@ -46,6 +46,9 @@ router.get("/myPage", (request, response) => {
   })
 });
 
+
+
+
 router.post("/myPage", (request, response) => {
   const service = {
     id: request.body.id,
