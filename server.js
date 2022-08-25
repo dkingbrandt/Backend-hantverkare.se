@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const routerServices = require("./Api/serviceAPI")
 const cors = require("cors")
+const db = require("./database/db")
 
 
 const app = express();
@@ -14,8 +15,10 @@ app.use(cors({
     credentials: true
 }))
 
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
 
 app.use(routerServices);
 app.listen(8080, () => {
-    console.log(`listenig on port ${port}`);
+    console.log(`listening on port ${port}`);
 })

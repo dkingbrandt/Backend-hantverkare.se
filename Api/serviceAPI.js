@@ -1,6 +1,7 @@
 const { request, response, application } = require("express");
 const express = require("express");
 const router = express.Router();
+const addsController = require("../controller/addsController")
 
 let services = [
   {
@@ -37,7 +38,7 @@ let services = [
   }
 ];
 
-router.get("/myPage", (request, response) => {
+router.get("/myPage", addsController.getAdds, (request, response) => {
 
   response.json({
     status: "success",
@@ -49,7 +50,7 @@ router.get("/myPage", (request, response) => {
 
 
 
-router.post("/myPage", (request, response) => {
+router.post("/myPage", addsController.createAdds, (request, response) => {
   const service = {
     id: request.body.id,
     heading: request.body.heading,
