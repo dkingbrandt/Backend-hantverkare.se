@@ -30,3 +30,34 @@ const newUser = await User.create({
         }
     })
 })
+
+exports.login = catchAsync(async (req, res, next)=>{
+    const {email, password} = req.body;
+
+    if(!email || !password){
+         return res.status(400).json({
+      success: false,
+      error: " ERROR, email or password missing",
+    })
+    }
+ // check if user excists && password is correct
+    const user = await User.findOne({email}).select("+password") //use select to get back password to input
+
+    
+    
+    if(!user || !(await user.correctPassword(password, user.password))){
+        return res.status(401).json({
+            success: false,
+            error: "incorrect email or password"
+        })
+        
+    }
+    console.log(user);
+    const token = signToken(user._id);
+    res.status(200).json({
+        status: "success",
+        token
+    })
+
+
+})
