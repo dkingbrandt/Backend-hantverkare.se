@@ -1,4 +1,6 @@
+const { fail } = require("assert");
 const jwt = require("jsonwebtoken");
+const {promisify} = require("util");
 const User = require('./../models/userModel');
 const catchAsync = require('./../utility/catchAsync');
 
@@ -14,7 +16,8 @@ exports.signup = catchAsync(async (req, res, next) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        passwordConfirm: req.body.passwordConfirm
+        passwordConfirm: req.body.passwordConfirm,
+        passwordChangedAt: req.body.passwordChangedAt
     })
 
     const token = signToken(newUser._id);
@@ -52,7 +55,7 @@ exports.login = catchAsync(async (req, res, next) => {
         })
 
     }
-    console.log(user);
+   
     const token = signToken(user._id);
     res.status(200).json({
         status: "success",
@@ -70,12 +73,42 @@ exports.protect = catchAsync(async (req, res, next) => {
         token = req.headers.authorization.split(' ')[1];
 
     }
-    console.log(token);
+    
 
     if (!token) {
         return res.status(401).json({ success: false, error: "you are not logged in" })
     }
+     //verification token
+    try{const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+        
+        //check if user still exsists.
+        const currentUser = await User.findById(decoded.id);
+    if(!currentUser){
+        return res.status(401).json({
+            success:false,
+            message: "The user belonging to this token does no longer exsist"
+        })
+    }
+                                       //iat =issued at
+        //check if user changed password after the token was issued
+    if(currentUser.changedPasswordAfter(decoded.iat)){
+        return res.status(401).json({ success:false, message: "User recently changed password! Please log in again!"})
+    }
 
 
+    }
+    
+    catch(error){
+        res.status(401).json({
+            success:false,
+            error: error
+
+        })
+    }
+
+    
+    
+    // GRANT ACCESS TO PROTECTED ROUTE
+    req.user = freshUser;
     next()
 });
