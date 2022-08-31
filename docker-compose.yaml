@@ -3,6 +3,7 @@ services:
   backend:
     build: .
     container_name: backend_container
+    image: dkingbrandt/backend_hantverkare
     ports:
       - "8080:8080"
     volumes:
