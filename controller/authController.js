@@ -17,7 +17,8 @@ exports.signup = catchAsync(async (req, res, next) => {
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
-        passwordChangedAt: req.body.passwordChangedAt
+        passwordChangedAt: req.body.passwordChangedAt,
+        role: req.body.role,
     })
 
     const token = signToken(newUser._id);
@@ -83,6 +84,7 @@ exports.protect = catchAsync(async (req, res, next) => {
         
         //check if user still exsists.
         const currentUser = await User.findById(decoded.id);
+        req.user = currentUser;
     if(!currentUser){
         return res.status(401).json({
             success:false,
@@ -109,6 +111,16 @@ exports.protect = catchAsync(async (req, res, next) => {
     
     
     // GRANT ACCESS TO PROTECTED ROUTE
-    //req.user = currentUser;
+    
     next()
 });
+
+exports.restrictTo = (...roles) =>{
+    return (req,res,next)=>{
+        //roles ["admin","user"]. role="user"
+        if(!roles.includes(req.user.role)){
+            return res.status(403).json({ success: false, message: "you do not have permisson to perform this action"})
+        }
+        next();
+    }
+}
