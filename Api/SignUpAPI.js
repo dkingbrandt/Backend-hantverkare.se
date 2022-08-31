@@ -29,4 +29,11 @@ router.get("/users", authController.protect, userController.getAllUsers, (reques
   })
 });
 
+router.delete("/delete/:userId", userController.deleteUser, (request, response)=>{
+  response.json({
+    status:"success",
+    method: request.method
+  })
+})
+
 module.exports = router;
