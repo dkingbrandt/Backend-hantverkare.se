@@ -17,20 +17,20 @@ To start the server run `npm start` or `nodemon server`. Use the later one if yo
 For this application we have created a cloudbased docker-repository.
 
 Step one: 
-```javascript
-If you are new to docker, follow the link to make an account and download the docker desktop hub <https://www.docker.com/ > 
-```
+
+    If you are new to docker, follow the link to make an account and download the docker desktop hub <https://www.docker.com/ > 
+
 
 
 step two: 
 
-    Login to docker using the terminal by typing: "docker login" and passing        your credentials.
+    Login to docker using the terminal by typing: "docker login" and passing your credentials.
 
 
 step three:
-```javascript
-Using your terminal, type: "docker pull dkingbrandt/backend_hantverkare"
-```
+
+    Using your terminal, type: "docker pull dkingbrandt/backend_hantverkare"
+
 
 
 
