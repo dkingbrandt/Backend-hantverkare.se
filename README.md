@@ -19,7 +19,7 @@ For this application we have created a cloudbased docker-repository.
 Step one: 
 
     If you are new to docker, follow the link to make an account
-    and download the docker desktop hub <https://www.docker.com/ > 
+    and download the docker desktop hub <a href="https://www.docker.com/" a> 
 
 
 
