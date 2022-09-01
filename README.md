@@ -23,9 +23,9 @@ If you are new to docker, follow the link to make an account and download the do
 
 
 step two: 
-```javascript
-Login to docker using the terminal by typing: "docker login" and passing your credentials.
-```
+
+    Login to docker using the terminal by typing: "docker login" and passing        your credentials.
+
 
 step three:
 ```javascript
