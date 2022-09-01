@@ -16,30 +16,45 @@ To start the server run `npm start` or `nodemon server`. Use the later one if yo
 
 For this application we have created a cloudbased docker-repository.
 
- **Step one:** 
+ **Create account and download docker hub:** 
 
 If you are new to docker, follow the link to make an account and download the docker desktop hub <https://www.docker.com/> 
 
 
 
- **Step two:** 
+ **Logging into docker** 
 
 Login to docker using the terminal by typing: `docker login` and passing your credentials.
 
 
- **Step three:**
+ **Pull an image from the repository:**
 
 Using your terminal, type: `docker pull dkingbrandt/backend_hantverkare`.
 This will pull an already created image from the repository.
 
- **Step four:**
+ **Update image and create a container:**
 
 To update the docker image with your code and create a docker container for it to run in, type in the terminal `docker-compose up`.
 Your container will now be up and running.
 
- **Step five:**
+ **Making changes to your image and push it to the repository :**
 
 After making changes to your code, you can type `docker-compose up` to update your docker image and type ` docker push dkingbrandt/backend_hantverkare` to push the newly updated image to the shared repository.
+
+ **List of images**
+
+Type `docker images`.
+
+ **List of containers**
+
+Type `docker ps`(list of containers running).
+Type `docker ps -a`(list of all containers).
+
+ **Delete docker container and image**
+To delete your docker container type `docker-compose down`.
+To delete your image type `docker images rm "name of image"`
+To delete all your images and containers type `docker system prune -a`
+
 
 
 
