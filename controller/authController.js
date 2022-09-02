@@ -4,6 +4,7 @@ const {promisify} = require("util");
 const User = require('./../models/userModel');
 const catchAsync = require('./../utility/catchAsync');
 const sendEmail = require("./../utility/email")
+const crypto = require("crypto");
 
 
 const signToken = id => {
@@ -169,6 +170,36 @@ user.PasswordResetExpires = undefined
 
 })
 
-exports.resetPassword = (req,res,next)=>{
+exports.resetPassword = catchAsync(async(req,res,next)=>{
 
-}
+    // 1 get user based on token
+    const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+    const user = await User.findOne({
+        passwordResetToken: hashedToken, 
+        PasswordResetExpires:{$gt:Date.now()}}) //$gt greater than
+
+    //2 if token has not expired and there is a user, set the new password
+  if(!user){
+    return res.status(400).json({success:false, message:"token is invalid or has expired" })
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.PasswordResetExpires=undefined;
+  await user.save();
+
+     
+  const token = signToken(user._id);
+    res.status(200).json({
+        status: "success",
+        token
+    })
+
+    //3 update changedpassword property for the user
+    //4 log the user in, send jwt
+
+})
