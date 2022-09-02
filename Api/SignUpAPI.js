@@ -20,6 +20,22 @@ router.post("/login", authController.login, (request, response, next) => {
 
   })
 });
+router.post("/forgotPassword", authController.forgotPassword, (request, response, next) => {
+
+  response.json({
+    status: "success",
+    method: request.method,
+
+  })
+});
+router.patch("/resetPassword/:token", authController.resetPassword, (request, response, next) => {
+
+  response.json({
+    status: "success",
+    method: request.method,
+
+  })
+});
 router.get("/users", authController.protect, userController.getAllUsers, (request, response, next) => {
 
   response.json({
