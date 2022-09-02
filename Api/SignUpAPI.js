@@ -1,3 +1,4 @@
+const { request } = require("express");
 const express = require("express");
 const router = express.Router();
 const authController = require("../controller/authController")
@@ -36,6 +37,14 @@ router.patch("/resetPassword/:token", authController.resetPassword, (request, re
 
   })
 });
+
+router.patch("/updateMyPassword", authController.protect, authController.updatePassword, (request,response)=>{
+
+  response.json({
+    status:"success",
+    method: request.method
+  })
+})
 router.get("/users", authController.protect, userController.getAllUsers, (request, response, next) => {
 
   response.json({
