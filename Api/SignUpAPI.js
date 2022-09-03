@@ -1,4 +1,4 @@
-const { request } = require("express");
+
 const express = require("express");
 const router = express.Router();
 const authController = require("../controller/authController")
@@ -41,6 +41,14 @@ router.patch("/resetPassword/:token", authController.resetPassword, (request, re
 
 
 router.patch("/updateMe", authController.protect, userController.updateMe, (request,response)=>{
+
+  response.json({
+    status:"success",
+    method: request.method
+  })
+})
+
+router.delete("/deleteMe", authController.protect, userController.deleteMe, (request,response)=>{
 
   response.json({
     status:"success",

@@ -64,6 +64,17 @@ exports.updateMe = catchAsync(async(req,res,next)=>{
         message: "This route is not yet defined!"
     })
  }
+
+exports.deleteMe = catchAsync(async(req,res,next)=>{
+    await User.findByIdAndUpdate(req.user.id, {active:false})
+    res.status(204).json({
+        status:"success",
+        data:null
+    })
+})
+
+
+ //for admin
  exports.deleteUser = async(req,res)=>{
     try{await User.findByIdAndDelete({_id:req.params.userId}, (err, user)=>{
         
