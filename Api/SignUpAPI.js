@@ -38,6 +38,15 @@ router.patch("/resetPassword/:token", authController.resetPassword, (request, re
   })
 });
 
+
+
+router.patch("/updateMe", authController.protect, userController.updateMe, (request,response)=>{
+
+  response.json({
+    status:"success",
+    method: request.method
+  })
+})
 router.patch("/updateMyPassword", authController.protect, authController.updatePassword, (request,response)=>{
 
   response.json({
