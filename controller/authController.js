@@ -5,6 +5,7 @@ const User = require('./../models/userModel');
 const catchAsync = require('./../utility/catchAsync');
 const sendEmail = require("./../utility/email")
 const crypto = require("crypto");
+const { REFUSED } = require("dns");
 
 
 const signToken = id => {
@@ -15,6 +16,14 @@ const signToken = id => {
 
 const createSendToken = (user, statuscode,res)=>{
  const token = signToken(user._id);
+ res.cookie("JWT",token,{
+     expiresIn:new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000), //NEED TO CHANGE FROM 90D TO 1H AND THEN IN MILLISECONDS
+    //secure:true, //.......... this line can only be active when in production mode
+    httpOnly:true
+ })
+//remove password from output
+ user.password = undefined
     res.status(statuscode).json({
         status:"success", 
         token,
@@ -34,8 +43,8 @@ exports.signup = catchAsync(async (req, res, next) => {
       
         
     })
-     
-    const token = signToken(newUser._id);
+      createSendToken(newUser,201,res);
+   
 
 
 
@@ -70,14 +79,8 @@ exports.login = catchAsync(async (req, res, next) => {
         })
 
     }
+    createSendToken(user,200,res);
    
-    const token = signToken(user._id);
-    res.status(200).json({
-        status: "success",
-        token
-    })
-
-
 })
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -204,11 +207,7 @@ exports.resetPassword = catchAsync(async(req,res,next)=>{
 
      //3 update changedpassword property for the user
     //4 log the user in, send jwt
-  const token = signToken(user._id);
-    res.status(200).json({
-        status: "success",
-        token
-    })
+  createSendToken(user,200,res);
 
 })
 
