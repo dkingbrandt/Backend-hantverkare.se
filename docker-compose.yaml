@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    container_name: backend_container
+    image: dkingbrandt/backend_hantverkare
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - ./app/node_modules
